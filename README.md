@@ -1,2 +1,45 @@
 # Python_WEB_ht11_REST_API_-redoing-
 REST API для зберігання та управління контактами. API повинен бути побудований з використанням інфраструктури FastAPI та використовувати SQLAlchemy для управління базою даних.
+
+
+1. venv
+2. pip install uvicorn[standard], fastapi, sqlalchemy, psycopg2, alembic, pydantic[email], 
+(робити файл pyproject.toml)
+3. Open Docker desktop and CMD. 
+
+3. 1.  Command in CMD: 
+docker run --name hw11_ver2_base -p 5433:5432 -e POSTGRES_PASSWORD=qwerty123 -e POSTGRES_DB=hw11_ver2_base -d postgres
+--> command:
+docker ps
+--> answer:
+CONTAINER ID   IMAGE      COMMAND                  CREATED          STATUS          PORTS                    NAMES
+f636dccd9d8e   postgres   "docker-entrypoint.s…"   19 seconds ago   Up 18 seconds   0.0.0.0:5433->5432/tcp   hw11_ver2_base
+
+3. 2. Check in Docker desktop if container hw11_ver2_base is working.
+
+4. Afted POstgres base creation and models.py is ready, perform migration of data to Postgres:
+4. 1. alembic init migrations
+4. 2. Оскільки ми хочемо використовувати автогенерацію SQL скриптів у міграціях alembic, нам необхідно повідомити про це оточення alembic у файлі env.py, який розташований у папці migrations. Відкриємо його і насамперед імпортуємо нашу декларативну базу Base з файлу models.py та рядок підключення SQLALCHEMY_DATABASE_URL до нашої бази даних.
+
+from src.database.models import Base
+from src.database.db import SQLALCHEMY_DATABASE_URL
+
+Далі нам необхідно знайти наступний рядок нижче в коді файлу env.py:
+
+target_metadata = None
+
+і замість None, вказати наші метадані:
+
+target_metadata = Base.metadata
+
+Тут виконаємо заміну рядка підключення до бази даних на актуальну:
+
+config.set_main_option("sqlalchemy.url", SQLALCHEMY_DATABASE_URL)
+4. 3. Створюємо міграцію наступною консольною командою в корені проекту.
+
+alembic revision --autogenerate -m 'Init'
+4. 4. Якщо файл з міграцією успішно створився в папці migrations/versions, то застосуємо створену міграцію:
+
+alembic upgrade head
+
+5. 
