@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "Python WEB HW 11 (version 2)"
+version = "0.1.0"
+description = "A FastAPI project to save contacts"
+authors = ["Yuliia Melnychenko <arwen.vogel@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11.5" 
+fastapi = "0.115.0"
+sqlalchemy = "2.0.35"
+psycopg2 = "2.9.9"
+alembic = "1.13.3"
+uvicorn = { version = "0.31.1", extras = ["standard"] }
+pydantic = "2.9.2"
+email_validator = "2.2.0"
+pydantic = { version = "*", extras = ["email"] }
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
